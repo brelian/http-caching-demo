@@ -1,16 +1,10 @@
 # HTTP CACHING
 
 > *Cache* is a hardware or software component that stores data so that future requests for that data can be served faster.
->
-> ### Notes:
->
-> - Can someone use HTTP caching before?
->
-> - Can anyone explain what's the role of 304 HTTP status code?
 
-------
+---
 
-## AGENDA
+### AGENDA
 
 - Why we use caching?
 - HTTP Caching flow?
@@ -18,82 +12,117 @@
 - Heuristic Expiration
 - Demo
 
-------
+---
 
-## STARTING FROM A QUESTION
-![](images/dog.jpg)
+### Start with A Scenario
+<img src="images/dog.jpg" style="zoom: 100%;" />
 
-We get the response headers when we request this image
+**Response Headers:**
 
 ```http
 HTTP/1.1 200 OK
 content-length: 39409
-last-modified: Thu, 14 May 2020 14:29:20 GMT
-x-response-time: 7ms
+last-modified: Sun, 21 Mar 2021 03:34:04 GMT
 ```
 
-------
+
 
 ### TWO QUESTIONS
 
-- What will happen when we refresh the button? Is any cache could we use?
-- If we set a header with `cache-control: no-cache`, What will happen when we refresh it agian?
+1. What will happen when we refresh the page? Is there a cache we could use?
+2. If we set a header with `cache-control: no-cache`, What will happen when we refresh it again?
 
-------
+---
 
-## WHY USE CACHING
+### The problem HTTP Caching solves?
 
-- Redundant Data Transfers
-- Bandwidth Bottlenecks
-- Flash Crowds
-- Distance Delays
+- Frequently request the same resource repeatedly?
+- Consistency issues caused by caching?
 
-------
+---
+
+### General Caching System?
+
+<img src="images/general-caching-system.png" style="zoom:67%;" />
+
+---
+
+### HTTP Caching System
+
+<img src="images/life-time.png" style="zoom:60%;" />
+
+---
+
+### General Caching System vs HTTP Caching System
+
+![images/http-caching-vs-general-caching.png](images/http-caching-vs-general-caching.png)
+
+---
+
+### Two QUESTIONS
+1. How to quickly determine whether the cache exists?
+
+2. When HTTP Caching is cleaned up?
 
 
-## CACHING STATES
+
+Answers:
+
+![](images/caching-storage-strategy.png)
+
+---
+
+### HTTP CACHING STATES
 
 ![](images/cache-steps.png)
 
-------
+---
 
-## CACHING PROCESS FLOW
+### CACHING PROCESS FLOW
 
 ![cache flow](images/cache-flow.png)
 
-------
+---
 
-## HTTP CACHE MECHANISM
+### HTTP CACHE MECHANISM
 
 ![mechanism](images/cache-mechanism.png)
 
-------
 
-## Henuristic Expiration
+
+### Cache-Control Headers
+
+<img src="images/cache-strategy.png" style="zoom:60%;" />
+
+---
+
+### Heuristic Expiration
 
 ![](images/cache-henuristic-expiration.png)
 
-------
+Typically,  `freshness_time = (downloaded_time - last_modified_time) * 10%`
 
-## 👨‍🎓 DEMO👩‍🎓
+See chromium source code [here](https://github.com/chromium/chromium/blob/99314be8152e688bafbbf9a615536bdbb289ea87/net/http/http_response_headers.cc#L1007)
+
+---
+
+### 👨‍🎓 DEMO👩‍🎓
 
 > The task:
 >
-> - Write a `send` function which handle revalidate logical
+> - Write a `revalidate` function which handle revalidate logical
 
 ```js
-function send(req, res) {
+function revalidate(req, res) {
     // generate etag
     
     // revalidate - 304
 }
 ```
 
+---
 
-
-------
-
-## THANK YOU
+### THANK YOU
 
 **Useful links && reference**
 
@@ -101,4 +130,8 @@ function send(req, res) {
 - https://tools.ietf.org/html/rfc7234
 - [HTTP Definitive Guide](https://www.amazon.com/HTTP-Definitive-Guide-Guides/dp/1565925092)
 - https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control
+
+**Contacts:**
+- syncviip@gmail.com
+- https://0x400.com
 

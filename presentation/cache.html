@@ -12,12 +12,24 @@
 
     <!-- Theme used for syntax highlighted code -->
     <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <style type="text/css">
+        .reveal .slides > section > section { text-align:left; }
+        .reveal p {
+            text-align: left;
+        }
+        .reveal ul {
+            display: block;
+        }
+        .reveal ol {
+            display: block;
+        }
+    </style>
 </head>
 <body>
 <div class="reveal">
     <div class="slides">
         <section data-markdown="http-caching.md"
-                 data-separator="^\r?\n------\r?\n$"
+                 data-separator="^\r?\n---\r?\n$"
                  data-separator-vertical="^\n\n"
                  data-separator-notes="^Note:"
                  data-charset="utf-8">
@@ -35,7 +47,7 @@
     // - https://revealjs.com/config/
     Reveal.initialize({
         hash: true,
-
+        center: false,
         // Learn about plugins: https://revealjs.com/plugins/
         plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
     });

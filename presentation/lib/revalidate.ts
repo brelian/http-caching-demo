@@ -1,26 +1,20 @@
-export default function send(req: any, res: any) {
-  // etag
-  res.headers.set("etag", etagFn(res.body));
-
-  // revalidate
-  const reqHeaders = {
-    "if-none-match": req.headers.get("if-none-match"),
-    "if-modified-since": req.headers.get("if-modified-since"),
-    "cache-control": req.headers.get("cache-control")
-  }
-  const resHeaders = {
-    "etag": res.headers.get("etag"),
-    "last-modified": res.headers.get("last-modified"),
-  }
-
-  const isFresh = fresh(reqHeaders, resHeaders);
-  if (isFresh) {
-    res.body = "";
-    res.status = 304;
-  }
+export function revalidate(req: any, res: any) {
+    res.headers.set('etag', etagFn(req.body));
+    const reqHeaders = {
+        'if-modified-since': req.headers.get('if-modified-since'),
+        'if-none-match': req.headers.get('if-none-match')
+    };
+    const resHeaders = {
+        'last-modified': res.headers.get('last-modified'),
+        'etag': res.headers.get('etag')
+    };
+    if (isFresh(reqHeaders, resHeaders)) {
+      res.status = 304;
+      res.body = '';
+    }
 }
 
-function fresh(reqHeaders: any, resHeaders: any) {
+function isFresh(reqHeaders: any, resHeaders: any) {
   const CACHE_CONTROL_NO_CACHE_REGEXP = /(?:^|,)\s*?no-cache\s*?(?:,|$)/
   // fields
   const modifiedSince = reqHeaders['if-modified-since']
@@ -61,44 +55,16 @@ function fresh(reqHeaders: any, resHeaders: any) {
   return true
 }
 
-function parseTokenList (str: string) {
-  let end = 0
-  let start = 0
-  const list = []
-
-  // gather tokens
-  for (let i = 0, len = str.length; i < len; i++) {
-    switch (str.charCodeAt(i)) {
-      case 0x20: /*   */
-        if (start === end) {
-          start = end = i + 1
-        }
-        break
-      case 0x2c: /* , */
-        list.push(str.substring(start, end))
-        start = end = i + 1
-        break
-      default:
-        end = i + 1
-        break
-    }
-  }
-
-  // final token
-  list.push(str.substring(start, end))
-
-  return list
-}
-
 function parseHttpDate (date: any) {
   const timestamp = date && Date.parse(date)
 
   // istanbul ignore next: guard against date.js Date.parse patching
   return typeof timestamp === 'number'
-    ? timestamp
-    : NaN
+      ? timestamp
+      : NaN
 }
 
 function etagFn(body: any) {
-  return `W/rQYfuZO00e3jjS2qbbzpow`
+  // TODO
+  return `W/'rQYfuZO00e3jjS2qbbzpow'`
 }
